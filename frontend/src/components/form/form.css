@@ -1,0 +1,44 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  justify-content: space-between;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+}
+
+.button {
+  padding: 4px;
+  text-align: center;
+  font-weight: bold;
+  background-color: crimson;
+  --aug-border: 5px;
+  --aug-inset: 5px;
+  --aug-border-bg: crimson;
+  --aug-inset-bg: none;
+  cursor: pointer;
+  font-size: 14px;
+  flex: 0.47;
+  color: white;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.button:hover {
+  --aug-inset-bg: #111;
+  background-color: #111;
+}
+
+.button:active {
+  --aug-inset-bg: blue;
+  background-color: blue;
+}
+
+.form-container {
+  width: 400px;
+  height: auto;
+  padding: 15px 15px 0 15px;
+}

@@ -1,0 +1,71 @@
+@keyframes blink-animation {
+  50% {
+    opacity: 0.0;
+  }
+}
+
+.blink {
+  animation: blink-animation 1s step-start 0s infinite;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.box {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  --aug-border: 5px;
+  --aug-inset: 7px;
+  --aug-border-bg: crimson;
+  --aug-inset-bg: #181818;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center;
+  justify-content: flex-start; */
+  font-size: 5vh;
+  height: 10vh;
+  margin-bottom: 4vh;
+  padding-left: 40px !important;
+}
+
+.box.full {
+  display: flex;
+  flex-direction: column;
+  height: 78vh;
+  width: calc((100% - 8vh) / 3);
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 15px 3px 25px;
+  font-weight: bold;
+  --aug-border-bg: none;
+  --aug-inset-bg: crimson;
+  font-size: 20px;
+  position: relative;
+  top: -7px;
+  left: -7px;
+  width: calc(100% + 14px);
+  border-bottom: 7px solid black;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px 15px 15px;
+  overflow: scroll;
+}
+
+.link {
+  cursor: pointer;
+}
