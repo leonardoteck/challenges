@@ -1,0 +1,2 @@
+release: npm run migration
+web: npm run start
