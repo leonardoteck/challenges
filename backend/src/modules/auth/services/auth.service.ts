@@ -25,13 +25,12 @@ export class AuthService {
     async createToken(email: string, userId: number): Promise<AccessToken> {
         const timestamp = new Date().getTime();
         const payload = { email };
-        const [accessToken] = await this.jwtService.signAsync(payload, { expiresIn: +process.env.JWT_EXPIRATION_TIME });
+        const accessToken = await this.jwtService.signAsync(payload, { expiresIn: +process.env.JWT_EXPIRATION_TIME });
         const obj = {
             expiresIn: +process.env.JWT_EXPIRATION_TIME,
             accessToken,
             userId,
             timestamp,
-            valid: true,
         };
         return obj;
     }

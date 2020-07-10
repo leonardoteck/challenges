@@ -6,6 +6,4 @@ export class AccessToken {
     timestamp: number;
 
     expiresIn: number;
-
-    valid: boolean;
 }

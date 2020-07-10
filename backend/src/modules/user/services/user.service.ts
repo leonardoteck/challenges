@@ -16,13 +16,10 @@ export class UserService {
 
     /**
      * This method is intended for authentication only!
-     * @param {string} email
-     * @returns {Promise<User>}
-     * @memberof UserService
      */
     async searchByEmail(email: string): Promise<User> {
         return this.userRepository
-            .findOne({ where: { email }, loadEagerRelations: false, relations: ['accessToken'] });
+            .findOne({ where: { email }, loadEagerRelations: false });
     }
 
     async emailExists(email: string): Promise<boolean> {
@@ -33,10 +30,6 @@ export class UserService {
             .select('u.id')
             .getRawMany(); // the lightest query one can think of
         return exists.length > 0;
-    }
-
-    async searchById(id: number): Promise<User> {
-        return this.userRepository.findOne(id, { loadEagerRelations: false });
     }
 
     async add(user: User): Promise<User> {

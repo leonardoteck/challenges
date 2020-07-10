@@ -3,7 +3,10 @@
 		"browser": true,
 		"es6": true
 	},
-	"extends": "airbnb",
+	"extends": [
+		"airbnb-base",
+  		"airbnb/rules/react"
+	],
 	"parser": "babel-eslint",
 	"globals": {
 		"Atomics": "readonly",
@@ -25,6 +28,7 @@
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
 		"no-use-before-define": ["error", { "variables": false }],
 		"react/forbid-prop-types": 0,
-		"no-confusing-arrow": "off"
+		"no-confusing-arrow": "off",
+		"react/button-has-type": ["error", { "reset": true }]
 	}
 }

@@ -23,9 +23,6 @@ export class UserController {
     @Post('register')
     async register(@Body() payload: UserPayload): Promise<User> {
         try {
-            const exists = await this.userService.searchByEmail(payload.email);
-            if (exists !== null && exists !== undefined) throw new BadRequestException('E-mail já cadastrado');
-
             const user = await this.userService.add({
                 ...payload,
                 id: 0,

@@ -2,9 +2,9 @@ import { Exclude } from 'class-transformer';
 import {
     Entity, Column, PrimaryGeneratedColumn,
 } from 'typeorm';
-
 import { PasswordTransformer } from '../transformers/password.transformer';
 import { BcryptHashService } from '../../auth/services/bcrypt-hash.service';
+
 @Entity({
     name: 'user',
 })
