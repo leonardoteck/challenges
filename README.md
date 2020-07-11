@@ -1,44 +1,70 @@
-# Challenges
+# iHeros - Teste Fullstack ZRP
 
-Com o objetivo de se tornar um funcionário ZRP você precisa provar para o nosso timme, um grupo de profissionais extremamente competentes e habilidosos, que você será capaz de analisar, prever e desenvolver as tarefas que te forem designadas.
+Desafio ZRP para desenvolvedores Fullstack: https://zrpaplicacoes.github.io/challenges/dev/
 
-Para cada um dos possíveis cargos que você for se candidatar haverá desafios dos mais diversos níveis, podendo estes serem _fáceis_, _normais_ ou _difíceis_. Você pode submeter o teste que achar que mais se encaixa com o seu perfil.
+## A Solução
 
-## Como submeter o seu projeto
+- Frontend: Webapp feito com React
+- Backend: API feita com NestJS com banco de dados PostgreSQL
 
-Cada área e cada projeto tem a sua própria regra quanto a submissão do desafio. Leia atentamente as regras e instruções antes de enviar seu projeto.
+## Executando o projeto
 
-> Dúvidas? Envie um email para [jobs@zrp.com.br](jobs@zrp.com.br).
+Tenha a última versão do NodeJS instalado e um servidor PostgreSQL local ou remoto disponível.
 
-## Como o processo seletivo da ZRP funciona
+### Backed
 
-### Primeira Fase - Seleção
+Navegue até a pasta do projeto e  instale as dependências:
 
-Na primeira fase você será avaliado por um dos sócios da ZRP. O objetivo dessa avaliação é ver se você possui aderência à cultura da empresa. Nós prezamos por pessoas prestativas, pró-ativas, comunicativas e interessadas em aprender. Suas core skills serão os seus diferenciais aqui.
+```
+> cd backend
+> npm install
+```
 
-### Segunda Fase - Desafio
+Cofigure as variáveis de ambiente no arquivo .env (se necessário):
 
-Se você passar na primeira fase você deverá escolher um desafio que você deseja enviar e nos dar uma previsão de quanto tempo você demorará para enviar aquele desafio.
-Não há tempo limite para a submissão, porém você será avaliado pela sua capacidade de prever seu tempo de entrega.
+```
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/iheros
+DATABASE_SSL=false
+...
+PORT=3001
+HOST=localhost
+...
+```
 
-Depois desse envio nosso time irá avaliar se:
+Crie um banco de dados e execute as migrations:
 
-- Você teve uma boa previsão do tempo que você levaria para resolver o problema
-- Resolveu com precisão o problema apresentado
-- Cumpriu com os requisitos e critérios de avaliação daquele desafio
+```
+> npm run db:create
+> npm run migration
+```
 
-### Terceira Fase - Feedback
+Inicie o projeto:
 
-Para aqueles que submeteram o desafio da segunda fase haverá uma revisão do desafio pelo nosso time e te chamaremos para um breve call de feedback dizendo se você foi contratado ou não e o porque da decisão.
+```
+> npm run start:faster
+```
 
-### Escolha o seu caminho
+### Frontend
 
-Para qual vaga você está se candidatando?
+Navegue até a pasta do projeto e  instale as dependências:
 
-- [Desenvolvedor](./dev)
-- [Devops](./devops)
-- [Designer](./design)
-- [PO](./po)
-- [QA](./qa)
-- [Comercial](./comercial)
-- [RH](./rh)
+```
+> cd frontend
+> npm install
+```
+
+Cofigure as variáveis de ambiente no arquivo .env (se necessário):
+
+```
+REACT_APP_API_URL=http://localhost:3001
+```
+
+Inicie o projeto:
+
+```
+> npm start
+```
+
+## Observações
+
+O backend recebe dados através de um WebSocket da ZRP. Para que não haja sobrecarga do banco de dados, a comunicação com o WS é estabelecida assim que um login é feito, e interrompida 30 minutos depois.
