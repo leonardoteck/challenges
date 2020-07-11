@@ -14,11 +14,11 @@ export class HeroFight {
     @Column({ type: 'int', nullable: true })
     heroId?: number
 
-    @ManyToOne(() => Hero, { cascade: false, eager: true, nullable: true })
+    @ManyToOne(() => Hero, hero => hero.heroFightList, { cascade: true, eager: true, nullable: true })
     hero?: Hero;
 
     @Column({ type: 'int', nullable: false })
-    fightId: number
+    fightId?: number
 
     @ManyToOne(() => Fight, fight => fight.heroFightList, { cascade: false, eager: false, nullable: false })
     fight?: Fight;

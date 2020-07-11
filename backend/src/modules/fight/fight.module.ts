@@ -5,13 +5,16 @@ import { FightController } from './controllers/fight.controller';
 import { FightService } from './services/fight.service';
 import { Fight } from './models/fight.entity';
 import { HeroFight } from './models/hero-fight.entity';
+import { Menace } from '../menace/models/menace.entity';
+import { Hero } from '../hero/models/hero.entity';
 
 @Module({
   imports: [
       PassportModule.register({ defaultStrategy: 'jwt' }),
-      TypeOrmModule.forFeature([Fight, HeroFight]),
+      TypeOrmModule.forFeature([Fight, Hero, HeroFight, Menace]),
   ],
   controllers: [FightController],
-  providers: [FightService]
+  providers: [FightService],
+  exports: [FightService],
 })
 export class FightModule {}

@@ -12,7 +12,7 @@ export default class Form extends Component {
     const { editData: { name, rankId, location } } = this.props;
     this.state = {
       name,
-      rankId,
+      rankId: rankId || props.ranks[0].id,
       location,
     };
   }
@@ -91,7 +91,7 @@ export default class Form extends Component {
               <input
                 value={location.latitude}
                 type="number"
-                step="0.000001"
+                step="0.000000000000001"
                 onChange={event => this
                   .setState({ location: { ...location, latitude: event.target.value } })}
               />

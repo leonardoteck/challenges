@@ -1,8 +1,9 @@
 import {
-    Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToOne, JoinColumn,
+    Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToOne, JoinColumn, OneToMany,
 } from 'typeorm';
 import { HeroRank } from './hero-rank.entity';
 import { Location } from '../../../models/location.entity';
+import { HeroFight } from '../../fight/models/hero-fight.entity';
 
 @Entity({
     name: 'hero',
@@ -29,4 +30,7 @@ export class Hero {
     @OneToOne(() => Location, { cascade: true, eager: true, nullable: false })
     @JoinColumn()
     location: Location;
+
+    @OneToMany(() => HeroFight, heroFight => heroFight.hero, { cascade: false, eager: false, nullable: false })
+    heroFightList?: HeroFight[];
 }

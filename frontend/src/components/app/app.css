@@ -59,6 +59,23 @@ header {
   border-bottom: 7px solid black;
 }
 
+.subtitle {
+  display: block;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 15px 3px 25px;
+  font-weight: bold;
+  font-size: 20px;
+  position: relative;
+  left: -27px;
+  top: 15px;
+  margin-bottom: 15px;
+  background-color: crimson;
+  width: calc(100% + 48px);
+  border-bottom: 7px solid black;
+  border-top: 7px solid black;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -68,4 +85,9 @@ header {
 
 .link {
   cursor: pointer;
+}
+
+.reload {
+  font-size: 15px;
+  padding-top: 4px;
 }

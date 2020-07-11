@@ -1,5 +1,5 @@
 import {
-    Entity, Column, PrimaryGeneratedColumn, OneToOne, OneToMany, JoinColumn,
+    Entity, Column, PrimaryGeneratedColumn, OneToOne, OneToMany,
 } from 'typeorm';
 import { HeroFight } from './hero-fight.entity';
 import { Menace } from '../../menace/models/menace.entity';
@@ -14,16 +14,12 @@ export class Fight {
     @Column('timestamp without time zone')
     dateStart: Date;
 
-    @Column('timestamp without time zone')
-    dateEnd: Date;
+    @Column({ type: 'timestamp without time zone', nullable: true})
+    dateEnd?: Date;
 
-    @OneToMany(() => HeroFight, heroFight => heroFight.fight, { cascade: false, eager: true, nullable: false })
+    @OneToMany(() => HeroFight, heroFight => heroFight.fight, { cascade: true, eager: true, nullable: false })
     heroFightList?: HeroFight[];
 
-    @Column({ type: 'int', nullable: false })
-    menaceId: number;
-
-    @OneToOne(() => Menace, { cascade: false, eager: true, nullable: false })
-    @JoinColumn()
-    menace: Menace;
+    @OneToOne(() => Menace, menace => menace.fight, { cascade: false, eager: true, nullable: true })
+    menace?: Menace;
 }

@@ -4,6 +4,7 @@ import Form from '../form/form';
 import Modal from '../modal/modal';
 import heroService from '../../services/hero';
 import menaceService from '../../services/menace';
+import fightService from '../../services/fight';
 import { httpError } from '../../services/alert';
 import authService from '../../services/auth';
 import Auth from '../auth/auth';
@@ -14,7 +15,10 @@ export default class App extends Component {
 
     this.state = {
       heroes: [],
-      fights: [],
+      fights: {
+        goingOn: [],
+        ended: [],
+      },
       menaces: [],
       heroRanks: [],
       menaceRanks: [],
@@ -35,17 +39,20 @@ export default class App extends Component {
         { data: heroes },
         { data: menaceRanks },
         { data: menaces },
+        { data: fights },
       ] = await Promise.all([
         heroService.ranks(),
         heroService.list(),
         menaceService.ranks(),
         menaceService.list(),
+        fightService.list(),
       ]);
       this.setState({
         heroRanks,
         heroes,
         menaceRanks,
         menaces,
+        fights,
         showLogin: false,
       });
     } catch (error) {
@@ -55,9 +62,10 @@ export default class App extends Component {
 
   heroSubmitted = (hero) => {
     const { editHeroIndex, heroes } = this.state;
-    if (editHeroIndex >= 0) heroes.splice(editHeroIndex, 1, hero);
+    if (editHeroIndex != null) heroes.splice(editHeroIndex, 1, hero);
     else heroes.push(hero);
     this.setState({ heroes, editHeroIndex: null, showHeroModal: false });
+    this.update();
   }
 
   menaceSubmitted = (menace) => {
@@ -65,6 +73,7 @@ export default class App extends Component {
     if (editMenaceIndex) menaces.splice(editMenaceIndex, 1, menace);
     else menaces.push(menace);
     this.setState({ menaces, editMenaceIndex: null, showMenaceModal: false });
+    this.update();
   }
 
   editHero = (index) => {
@@ -72,6 +81,7 @@ export default class App extends Component {
       editHeroIndex: index,
       showHeroModal: true,
     });
+    this.update();
   }
 
   editMenace = (index) => {
@@ -79,13 +89,35 @@ export default class App extends Component {
       editMenaceIndex: index,
       showMenaceModal: true,
     });
+    this.update();
   }
 
-  deleteMenace = async (index) => {
+  deleteHero = async (index) => {
     const { heroes } = this.state;
     await heroService.remove(heroes[index].id);
     heroes.splice(index, 1);
     this.setState({ heroes });
+    this.update();
+  }
+
+  update = async () => {
+    const [
+      { data: menaces },
+      { data: fights },
+    ] = await Promise.all([
+      menaceService.list(),
+      fightService.list(),
+    ]);
+    this.setState({
+      menaces,
+      fights,
+    });
+  }
+
+  endFight = async (index) => {
+    const { fights } = this.state;
+    await fightService.endFight(fights.goingOn[index].id);
+    this.update();
   }
 
   render() {
@@ -99,6 +131,7 @@ export default class App extends Component {
       editMenaceIndex,
       showMenaceModal,
       showLogin,
+      fights,
     } = this.state;
 
     return (
@@ -113,7 +146,9 @@ export default class App extends Component {
         <main>
           <section className="box full" augmented-ui="tl-clip br-clip exe">
             <div className="title" augmented-ui="tl-clip exe">
-              Heróis
+              Heróis (
+              {heroes.length}
+              )
               <span
                 className="link"
                 onClick={() => this.setState({ editHeroIndex: null, showHeroModal: true })}
@@ -156,12 +191,77 @@ export default class App extends Component {
           </section>
 
           <section className="box full" augmented-ui="tl-clip br-clip exe">
-            <div className="title" augmented-ui="tl-clip exe">Lutas no momento</div>
+            <div className="title" augmented-ui="tl-clip exe">
+              Lutas agora (
+              {fights.goingOn.length}
+              )
+              <span
+                className="link reload"
+                onClick={this.update}
+              >
+                [atualizar]
+              </span>
+            </div>
+            <div className="content">
+              {fights && fights.goingOn && fights.goingOn.length > 0 && (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Heróis</th>
+                      <th>Ameaça</th>
+                      <th>Início</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fights.goingOn.map((fight, index) => (
+                      <tr key={fight.id}>
+                        <td>{fight.heroFightList.map(hf => hf.hero ? hf.hero.name : '?').join(', ')}</td>
+                        <td>{fight.menace.name}</td>
+                        <td>{new Date(fight.dateStart).toLocaleString()}</td>
+                        <td>
+                          <span className="link" onClick={() => this.endFight(index)}>Encerrar</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              <div className="subtitle">
+                Lutas encerrada (
+                {fights.ended.length}
+                )
+              </div>
+              {fights && fights.ended && fights.ended.length > 0 && (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Heróis</th>
+                      <th>Ameaça</th>
+                      <th>Início</th>
+                      <th>Fim</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fights.ended.map(fight => (
+                      <tr key={fight.id}>
+                        <td>{fight.heroFightList.map(hf => hf.hero ? hf.hero.name : '?').join(', ')}</td>
+                        <td>{fight.menace.name}</td>
+                        <td>{new Date(fight.dateStart).toLocaleString()}</td>
+                        <td>{new Date(fight.dateEnd).toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </section>
 
           <section className="box full" augmented-ui="tl-clip br-clip exe">
             <div className="title" augmented-ui="tl-clip exe">
-              Ameaças
+              Ameaças (
+              {menaces.length}
+              )
               <span
                 className="link"
                 onClick={() => this.setState({ editMenaceIndex: null, showMenaceModal: true })}
@@ -207,11 +307,12 @@ export default class App extends Component {
               ranks={heroRanks}
               type="hero"
               submitted={this.heroSubmitted}
-              name={editHeroIndex >= 0 ? heroes[editHeroIndex].name : undefined}
-              rankId={editHeroIndex >= 0 ? heroes[editHeroIndex].heroRankId : undefined}
-              latitude={editHeroIndex >= 0 ? heroes[editHeroIndex].location.latitude : undefined}
-              longitude={editHeroIndex >= 0
-                ? heroes[editHeroIndex].location.longitude : undefined}
+              editData={editHeroIndex != null ? {
+                id: heroes[editHeroIndex].id,
+                name: heroes[editHeroIndex].name,
+                rankId: heroes[editHeroIndex].heroRankId,
+                location: heroes[editHeroIndex].location,
+              } : undefined}
               cancel={() => this.setState({ editHeroIndex: null, showHeroModal: false })}
             />
           </Modal>
@@ -222,7 +323,7 @@ export default class App extends Component {
               ranks={menaceRanks}
               type="menace"
               submitted={this.menaceSubmitted}
-              editData={editMenaceIndex >= 0 ? {
+              editData={editMenaceIndex != null ? {
                 id: menaces[editMenaceIndex].id,
                 name: menaces[editMenaceIndex].name,
                 rankId: menaces[editMenaceIndex].menaceRankId,

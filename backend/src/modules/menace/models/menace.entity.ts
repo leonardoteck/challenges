@@ -3,6 +3,7 @@ import {
 } from 'typeorm';
 import { MenaceRank } from './menace-rank.entity';
 import { Location } from '../../../models/location.entity';
+import { Fight } from '../../fight/models/fight.entity';
 
 @Entity({
     name: 'menace',
@@ -29,4 +30,11 @@ export class Menace {
     @OneToOne(() => Location, { cascade: true, eager: true, nullable: false })
     @JoinColumn()
     location: Location;
+
+    @Column({ type: 'int', nullable: true })
+    fightId?: number
+
+    @OneToOne(() => Fight, fight => fight.menace, { cascade: true, eager: false, nullable: true })
+    @JoinColumn()
+    fight?: Fight;
 }

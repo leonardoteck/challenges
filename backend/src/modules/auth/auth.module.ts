@@ -6,6 +6,7 @@ import { AuthService } from './services/auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModule } from '../user/user.module';
 import { BcryptHashService } from './services/bcrypt-hash.service';
+import { MenaceModule } from '../menace/menace.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { BcryptHashService } from './services/bcrypt-hash.service';
             secret: process.env.JWT_SECRET_KEY,
         }),
         UserModule,
+        MenaceModule,
     ],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy, BcryptHashService],
