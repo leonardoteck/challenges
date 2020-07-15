@@ -31,12 +31,8 @@ services:
     volumes:
       - ./backend/:/app/backend
     networks:
-      backend-network:
-        aliases:
-          - api
-      api-network:
-        aliases:
-          - api
+      - backend-network
+      - api-network
     tty: "true"
   front:
     build:
