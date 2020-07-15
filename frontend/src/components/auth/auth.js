@@ -10,8 +10,8 @@ export default class Auth extends Component {
     super(props);
 
     this.state = {
-      email: 'leonardo@teck.com',
-      password: '12345678',
+      email: '',
+      password: '',
     };
   }
 

@@ -7,13 +7,21 @@ Desafio ZRP para desenvolvedores Fullstack: https://zrpaplicacoes.github.io/chal
 - Frontend: Webapp feito com React
 - Backend: API feita com NestJS com banco de dados PostgreSQL
 
-## Executando o projeto
+## Executando o projeto - Com Docker
+
+Com o docker instalado e atualizado, execute o comando
+
+```
+> docker-compose up
+```
+
+## Executando o projeto - Sem Docker
 
 Tenha a última versão do NodeJS instalado e um servidor PostgreSQL local ou remoto disponível.
 
 ### Backed
 
-Navegue até a pasta do projeto e  instale as dependências:
+Navegue até a pasta do projeto e instale as dependências:
 
 ```
 > cd backend
